@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 from hashlib import md5
+# make it compatible to django 1.10
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    MiddlewareMixin = object
 
 
-class SecretBallotMiddleware(object):
+class SecretBallotMiddleware(MiddlewareMixin):
     def process_request(self, request):
         request.secretballot_token = self.generate_token(request)
 
